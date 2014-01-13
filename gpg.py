@@ -11,7 +11,7 @@ import shutil
 import subprocess
 
 
-def gpg(window, data, opts, modify_document=True):
+def gpg(window, data, opts):
     """gpg calls the gpg binary to process the data and returns the result."""
 
     s = sublime.load_settings('gpg.sublime-settings')
@@ -35,7 +35,7 @@ def gpg(window, data, opts, modify_document=True):
         result, error = gpg_process.communicate()
         if error:
             panel(window, error.decode())
-        if gpg_process.returncode or not modify_document:
+        if gpg_process.returncode:
             return None
         return result.decode()
     except IOError as e:
@@ -63,7 +63,7 @@ class GpgMessageCommand(sublime_plugin.TextCommand):
 
 
 class GpgCommand(sublime_plugin.TextCommand):
-    """A helper command to replace the document contents with new ones."""
+    """A helper command to replace the document content with new content."""
 
     def run(self, edit, opts):
         doc = sublime.Region(0, self.view.size())
