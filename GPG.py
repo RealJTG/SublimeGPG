@@ -1,3 +1,10 @@
+"""
+This GPG plugin for Sublime Text 3 adds commands to decrypt, encrypt, sign, and
+authenticate documents.
+"""
+
+__author__ = 'crowsonkb@gmail.com (Katherine Crowson)'
+
 import sublime, sublime_plugin
 
 import shutil
