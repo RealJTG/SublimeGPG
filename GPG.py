@@ -4,6 +4,7 @@ import os
 import shutil
 import subprocess
 
+
 def gpg(window, data, opts, modify_document=True):
     """gpg calls the gpg binary to process the data and returns the result."""
 
@@ -40,6 +41,8 @@ def gpg(window, data, opts, modify_document=True):
 
 
 def panel(window, message):
+    """panel displays gpg's stderr at the bottom of the window."""
+
     p = window.create_output_panel('gpg_message')
     p.run_command('gpg_message', {'message': message})
     p.show(p.size())
@@ -47,11 +50,14 @@ def panel(window, message):
 
 
 class GpgMessageCommand(sublime_plugin.TextCommand):
+    """A helper command for panel."""
+
     def run(self, edit, message):
         self.view.insert(edit, self.view.size(), message)
 
 
 class GpgCommand(sublime_plugin.TextCommand):
+    """A helper command to replace the document contents with new ones."""
     def run(self, edit, opts):
         doc = sublime.Region(0, self.view.size())
         data = gpg(self.view.window(), self.view.substr(doc), opts)
@@ -60,6 +66,8 @@ class GpgCommand(sublime_plugin.TextCommand):
 
 
 class GpgDecryptCommand(sublime_plugin.WindowCommand):
+    """Decrypts an OpenPGP format message."""
+
     def run(self):
         self.window.show_input_panel('Passphrase:', '', self.on_done, None, None)
 
@@ -69,6 +77,8 @@ class GpgDecryptCommand(sublime_plugin.WindowCommand):
 
 
 class GpgEncryptCommand(sublime_plugin.WindowCommand):
+    """Encrypts plaintext to an OpenPGP format message."""
+
     def run(self):
         self.window.show_input_panel('Recipient:', '', self.on_done, None, None)
 
@@ -78,6 +88,8 @@ class GpgEncryptCommand(sublime_plugin.WindowCommand):
 
 
 class GpgSignCommand(sublime_plugin.WindowCommand):
+    """Signs the document using a clear text signature."""
+
     def run(self):
         self.window.show_input_panel('Passphrase:', '', self.on_done, None, None)
 
@@ -87,6 +99,8 @@ class GpgSignCommand(sublime_plugin.WindowCommand):
 
 
 class GpgSignAndEncryptCommand(sublime_plugin.WindowCommand):
+    """Encrypts plaintext to a signed OpenPGP format message."""
+
     def run(self):
         self.window.show_input_panel('Recipient:', '', self.on_done, None, None)
 
@@ -103,6 +117,8 @@ class GpgSignAndEncryptCommand(sublime_plugin.WindowCommand):
 
 
 class GpgVerifyCommand(sublime_plugin.WindowCommand):
+    """Verifies the document's signature without altering the document."""
+
     def run(self):
         opts = ['--verify']
         self.window.active_view().run_command('gpg', {'opts': opts})
