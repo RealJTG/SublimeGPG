@@ -12,6 +12,8 @@ def gpg(window, data, opts):
             '--batch',
             '--trust-model', 'always',
             '--yes'] + opts
+    for _ in range(0, s.get('verbosity')):
+        opts.append('--verbose')
     if not opts[0]:
         panel(window, 'Error: could not locate the gpg binary')
         return data
