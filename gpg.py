@@ -14,7 +14,7 @@ import subprocess
 def gpg(window, data, opts, modify_document=True):
     """gpg calls the gpg binary to process the data and returns the result."""
 
-    s = sublime.load_settings('GPG.sublime-settings')
+    s = sublime.load_settings('gpg.sublime-settings')
     gpg_command = s.get('gpg_command')
     opts = [shutil.which(gpg_command),
             '--armor',
