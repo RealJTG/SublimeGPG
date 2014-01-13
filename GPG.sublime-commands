@@ -1,0 +1,12 @@
+[{
+  "caption": "GPG: Decrypt",
+  "command": "gpg_decrypt", 
+},
+{
+  "caption": "GPG: Encrypt",
+  "command": "gpg_encrypt", 
+},
+{
+  "caption": "GPG: Sign",
+  "command": "gpg_sign", 
+}]
