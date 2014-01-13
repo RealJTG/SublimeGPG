@@ -1,6 +1,5 @@
 import sublime, sublime_plugin
 
-import os
 import shutil
 import subprocess
 
@@ -10,7 +9,7 @@ def gpg(window, data, opts, modify_document=True):
 
     s = sublime.load_settings('GPG.sublime-settings')
     gpg_command = s.get('gpg_command')
-    opts = [shutil.which(gpg_command), 
+    opts = [shutil.which(gpg_command),
             '--armor',
             '--batch',
             '--trust-model', 'always',
@@ -22,9 +21,9 @@ def gpg(window, data, opts, modify_document=True):
         return None
     try:
         gpg_process = subprocess.Popen(opts,
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
+                                       stdin=subprocess.PIPE,
+                                       stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE)
         gpg_process.stdin.write(data.encode())
         result, error = gpg_process.communicate()
         if error:
@@ -58,6 +57,7 @@ class GpgMessageCommand(sublime_plugin.TextCommand):
 
 class GpgCommand(sublime_plugin.TextCommand):
     """A helper command to replace the document contents with new ones."""
+
     def run(self, edit, opts):
         doc = sublime.Region(0, self.view.size())
         data = gpg(self.view.window(), self.view.substr(doc), opts)
