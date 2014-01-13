@@ -1,0 +1,28 @@
+[{
+	"id": "tools",
+	"children": [{
+		"id": "gpg",
+		"caption": "GPG",
+		"children": [{
+			"id": "decrypt",
+			"caption": "Decrypt",
+			"command": "gpg_decrypt"
+		}, {
+			"id": "encrypt",
+			"caption": "Encrypt",
+			"command": "gpg_encrypt"
+		}, {
+			"id": "sign",
+			"caption": "Sign",
+			"command": "gpg_sign"
+		}, {
+			"id": "sign_and_encrypt",
+			"caption": "Sign and encrypt",
+			"command": "gpg_sign_and_encrypt"
+		}, {
+			"id": "verify",
+			"caption": "Verify signature",
+			"command": "gpg_verify"
+		}]
+	}]
+}]
