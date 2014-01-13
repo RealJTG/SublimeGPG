@@ -1,4 +1,4 @@
 {
 	"gpg_command": "gpg",
-	"verbosity": 1
+	"verbosity": 1,
 }

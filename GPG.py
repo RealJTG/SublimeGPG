@@ -4,7 +4,9 @@ import os
 import shutil
 import subprocess
 
-def gpg(window, data, opts):
+def gpg(window, data, opts, modify_document=True):
+    """gpg calls the gpg binary to process the data and returns the result."""
+
     s = sublime.load_settings('GPG.sublime-settings')
     gpg_command = s.get('gpg_command')
     opts = [shutil.which(gpg_command), 
@@ -16,7 +18,7 @@ def gpg(window, data, opts):
         opts.append('--verbose')
     if not opts[0]:
         panel(window, 'Error: could not locate the gpg binary')
-        return data
+        return None
     try:
         gpg_process = subprocess.Popen(opts,
             stdin=subprocess.PIPE,
@@ -26,22 +28,22 @@ def gpg(window, data, opts):
         result, error = gpg_process.communicate()
         if error:
             panel(window, error.decode())
-        if gpg_process.returncode:
-            return data
+        if gpg_process.returncode or not modify_document:
+            return None
         return result.decode()
     except IOError as e:
         panel(window, 'Error: %s' % e)
-        return data
+        return None
     except OSError as e:
         panel(window, 'Error: %s' % e)
-        return data
+        return None
 
 
 def panel(window, message):
-    p = window.create_output_panel('gpg_error')
+    p = window.create_output_panel('gpg_message')
     p.run_command('gpg_message', {'message': message})
     p.show(p.size())
-    window.run_command('show_panel', {'panel': 'output.gpg_error'})
+    window.run_command('show_panel', {'panel': 'output.gpg_message'})
 
 
 class GpgMessageCommand(sublime_plugin.TextCommand):
@@ -53,7 +55,8 @@ class GpgCommand(sublime_plugin.TextCommand):
     def run(self, edit, opts):
         doc = sublime.Region(0, self.view.size())
         data = gpg(self.view.window(), self.view.substr(doc), opts)
-        self.view.replace(edit, doc, data)
+        if data:
+            self.view.replace(edit, doc, data)
 
 
 class GpgDecryptCommand(sublime_plugin.WindowCommand):
@@ -70,7 +73,7 @@ class GpgEncryptCommand(sublime_plugin.WindowCommand):
         self.window.show_input_panel('Recipient:', '', self.on_done, None, None)
 
     def on_done(self, recipient):
-        opts = ['-e', '-r', recipient]
+        opts = ['--encrypt', '--recipient', recipient]
         self.window.active_view().run_command('gpg', {'opts': opts})
 
 
@@ -80,4 +83,26 @@ class GpgSignCommand(sublime_plugin.WindowCommand):
 
     def on_done(self, passphrase):
         opts = ['--clearsign', '--passphrase', passphrase]
+        self.window.active_view().run_command('gpg', {'opts': opts})
+
+
+class GpgSignAndEncryptCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        self.window.show_input_panel('Recipient:', '', self.on_done, None, None)
+
+    def on_done(self, recipient):
+        self.recipient = recipient
+        self.window.show_input_panel('Passphrase:', '', self.on_done2, None, None)
+
+    def on_done2(self, passphrase):
+        opts = ['--sign',
+                '--encrypt',
+                '--recipient', self.recipient,
+                '--passphrase', passphrase]
+        self.window.active_view().run_command('gpg', {'opts': opts})
+
+
+class GpgVerifyCommand(sublime_plugin.WindowCommand):
+    def run(self):
+        opts = ['--verify']
         self.window.active_view().run_command('gpg', {'opts': opts})
