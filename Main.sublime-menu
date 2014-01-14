@@ -25,4 +25,17 @@
 			"command": "gpg_verify"
 		}]
 	}]
+}, {
+	"id": "preferences",
+	"children": [{
+		"id": "package-settings",
+		"children": [{
+			"id": "gpg",
+			"caption": "GPG",
+			"command": "open_file",
+			"args": {
+				"file": "${packages}/SublimeGPG/gpg.sublime-settings"
+			}
+		}]
+	}]
 }]
