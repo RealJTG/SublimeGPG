@@ -1,4 +1,7 @@
 {
+	// You may need to specify the full path if gpg is not in $PATH.
 	"gpg_command": "gpg",
+
+	// Valid values: 0-2.
 	"verbosity": 1,
 }
