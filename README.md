@@ -18,5 +18,6 @@ Menu items added
 Flaws and limitations
 ---------------------
 
-- The passphrase prompt does not hide the text entered. Do *not* use this while someone is looking over your shoulder!
+- The passphrase prompt does not hide the text entered. Do *not* use this while someone is looking over your shoulder! (If anyone has ideas on how to prompt for input securely inside a Sublime Text plugin, please share!)
+
 - Signatures can only be created with the default key (the first key in the secret key ring, or else the default specified in gpg.conf).
