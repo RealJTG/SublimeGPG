@@ -1,7 +1,7 @@
 GPG
 ===
 
-This GPG plugin for Sublime Text 3 adds commands to decrypt, encrypt, sign, and authenticate documents. It requires a working copy of [GPG](http://www.gnupg.org/). If the gpg binary is not in `$PATH`, you will have to set its location in Preferences → Package Settings → GPG. On Mac OS, I recommend installing GPG using the [Homebrew package manager](http://brew.sh/); after installing Homebrew, run `brew install gpg`.
+This GPG plugin for Sublime Text 3 adds commands to decrypt, encrypt, sign, and authenticate documents. It requires a working copy of [GPG](http://www.gnupg.org/). If the gpg binary is not in `$PATH`, you will have to set its location in Preferences → Package Settings → GPG. On Mac OS, I recommend installing GPG using the [Homebrew package manager](http://brew.sh/): after installing Homebrew, run `brew install gpg`.
 
 Menu items added
 ----------------
