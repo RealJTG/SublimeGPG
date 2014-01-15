@@ -17,8 +17,8 @@ PASSPHRASE_APPLESCRIPT = '''
 set passphrase to text returned of ¬
     (display dialog ¬
         "Enter your passphrase…" with title ¬
-        "SublimeGPG" with icon ¬
-        note default answer ¬
+        "SublimeGPG" with icon POSIX file ¬
+        "/Applications/Utilities/Keychain Access.app/Contents/Resources/Keychain.icns" default answer ¬
         "" with hidden answer)
 '''
 
