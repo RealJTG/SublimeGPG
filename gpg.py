@@ -13,6 +13,7 @@ import subprocess
 
 PIPE = subprocess.PIPE
 
+
 def gpg(window, data, opts):
     """gpg calls the gpg binary to process the data and returns the result."""
 
@@ -54,12 +55,12 @@ def panel(window, message):
     window.run_command('show_panel', {'panel': 'output.gpg_message'})
 
 
-def passphrase(window, callback):
+def get_passphrase(window, callback):
     if platform.system() == 'Darwin':
         osa_process = subprocess.Popen(
             ['osascript', '-e',
              'display dialog "Enter your passphrase" default answer "" with hidden answer'],
-             stdin=PIPE, stdout=PIPE, stderr=PIPE)
+            stdin=PIPE, stdout=PIPE, stderr=PIPE)
         result, error = osa_process.communicate()
         if error:
             return
@@ -89,7 +90,7 @@ class GpgDecryptCommand(sublime_plugin.WindowCommand):
     """Decrypts an OpenPGP format message."""
 
     def run(self):
-        passphrase(self.window, self.on_done)
+        get_passphrase(self.window, self.on_done)
 
     def on_done(self, passphrase):
         opts = ['--passphrase', passphrase]
@@ -111,7 +112,7 @@ class GpgSignCommand(sublime_plugin.WindowCommand):
     """Signs the document using a clear text signature."""
 
     def run(self):
-        passphrase(self.window, self.on_done)
+        get_passphrase(self.window, self.on_done)
 
     def on_done(self, passphrase):
         opts = ['--clearsign', '--passphrase', passphrase]
@@ -126,7 +127,7 @@ class GpgSignAndEncryptCommand(sublime_plugin.WindowCommand):
 
     def on_done(self, recipient):
         self.recipient = recipient
-        passphrase(self.window, self.on_done2)
+        get_passphrase(self.window, self.on_done2)
 
     def on_done2(self, passphrase):
         opts = ['--sign',
