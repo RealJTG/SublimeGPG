@@ -43,8 +43,7 @@ def gpg(window, data, opts):
     try:
         gpg_process = subprocess.Popen(opts,
                                        stdin=PIPE, stdout=PIPE, stderr=PIPE)
-        gpg_process.stdin.write(data.encode())
-        result, error = gpg_process.communicate()
+        result, error = gpg_process.communicate(input=data.encode())
         if error:
             panel(window, error.decode())
         if gpg_process.returncode:
@@ -73,8 +72,8 @@ def get_passphrase(window, callback):
     if platform.system() == 'Darwin':
         osa_process = subprocess.Popen('osascript',
                                        stdin=PIPE, stdout=PIPE, stderr=PIPE)
-        osa_process.stdin.write(PASSPHRASE_APPLESCRIPT.encode())
-        result, error = osa_process.communicate()
+        result, error = osa_process.communicate(
+            input=PASSPHRASE_APPLESCRIPT.encode())
         if error:
             return
         callback(result.decode().rstrip())
