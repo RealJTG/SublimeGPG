@@ -56,6 +56,8 @@ def panel(window, message):
 
 
 def get_passphrase(window, callback):
+    """get_passphrase prompts the user for their passphrase."""
+
     if platform.system() == 'Darwin':
         osa_process = subprocess.Popen(
             ['osascript', '-e',
