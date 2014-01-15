@@ -11,6 +11,7 @@ __author__ = 'crowsonkb@gmail.com (Katherine Crowson)'
 import sublime, sublime_plugin
 
 import platform
+import shutil
 import subprocess
 
 PASSPHRASE_APPLESCRIPT = '''
@@ -70,13 +71,20 @@ def get_passphrase(window, callback):
     """get_passphrase prompts the user for their passphrase."""
 
     if platform.system() == 'Darwin':
-        osa_process = subprocess.Popen('osascript',
-                                       stdin=PIPE, stdout=PIPE, stderr=PIPE)
-        result, error = osa_process.communicate(
+        dialog_process = subprocess.Popen('osascript',
+                                          stdin=PIPE, stdout=PIPE, stderr=PIPE)
+        result, error = dialog_process.communicate(
             input=PASSPHRASE_APPLESCRIPT.encode())
         if error:
             return
-        callback(result.decode().rstrip())
+        callback(result.decode().rstrip('\r\n'))
+    elif shutil.which('zenity'):
+        dialog_process = subprocess.Popen(
+            ['zenity', '--password', '--name=SublimeGPG'],
+            stdin=PIPE, stdout=PIPE, stderr=PIPE)
+        result, error = dialog_process.communicate()
+        if not dialog_process.returncode:
+            callback(result.decode().rstrip('\r\n'))
     else:
         window.show_input_panel('Passphrase:', '', callback, None, None)
 
