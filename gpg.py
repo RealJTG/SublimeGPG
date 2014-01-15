@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """GPG plugin for Sublime Text 3.
 
 This GPG plugin for Sublime Text 3 adds commands to decrypt, encrypt, sign, and
