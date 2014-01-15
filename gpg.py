@@ -1,4 +1,5 @@
-"""
+"""GPG plugin for Sublime Text 3.
+
 This GPG plugin for Sublime Text 3 adds commands to decrypt, encrypt, sign, and
 authenticate documents.
 """
@@ -10,6 +11,15 @@ import sublime, sublime_plugin
 import platform
 import shutil
 import subprocess
+
+PASSPHRASE_APPLESCRIPT = '''
+set passphrase to text returned of ¬
+    (display dialog ¬
+        "Enter your passphrase…" with title ¬
+        "SublimeGPG" with icon ¬
+        note default answer ¬
+        "" with hidden answer)
+'''
 
 PIPE = subprocess.PIPE
 
@@ -30,7 +40,8 @@ def gpg(window, data, opts):
         panel(window, 'Error: could not locate the gpg binary')
         return None
     try:
-        gpg_process = subprocess.Popen(opts, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+        gpg_process = subprocess.Popen(opts,
+                                       stdin=PIPE, stdout=PIPE, stderr=PIPE)
         gpg_process.stdin.write(data.encode())
         result, error = gpg_process.communicate()
         if error:
@@ -59,14 +70,13 @@ def get_passphrase(window, callback):
     """get_passphrase prompts the user for their passphrase."""
 
     if platform.system() == 'Darwin':
-        osa_process = subprocess.Popen(
-            ['osascript', '-e',
-             'display dialog "Enter your passphrase" default answer "" with hidden answer'],
-            stdin=PIPE, stdout=PIPE, stderr=PIPE)
+        osa_process = subprocess.Popen('osascript',
+                                       stdin=PIPE, stdout=PIPE, stderr=PIPE)
+        osa_process.stdin.write(PASSPHRASE_APPLESCRIPT.encode())
         result, error = osa_process.communicate()
         if error:
             return
-        callback(result.decode().partition('text returned:')[2][:-1])
+        callback(result.decode().rstrip())
     else:
         window.show_input_panel('Passphrase:', '', callback, None, None)
 
