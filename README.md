@@ -18,6 +18,6 @@ Menu items added
 Flaws and limitations
 ---------------------
 
-- Except on OS X, the passphrase prompt does not hide the text entered. On other OSes, do *not* use this while someone is looking over your shoulder! (If someone knows good ways to pop up a secure passphrase entry dialog on Linux or Windows, I would appreciate knowing how.)
+- On Windows, the passphrase prompt does not hide the text entered: do *not* use this while someone is looking over your shoulder! Linux will also use an insecure passphrase prompt if `zenity` is not installed.
 
 - Signatures can only be created with the default key (the first key in the secret key ring, or else the default specified in gpg.conf).
