@@ -11,7 +11,6 @@ __author__ = 'crowsonkb@gmail.com (Katherine Crowson)'
 import sublime, sublime_plugin
 
 import platform
-import shutil
 import subprocess
 
 PASSPHRASE_APPLESCRIPT = '''
@@ -31,7 +30,7 @@ def gpg(window, data, opts):
 
     s = sublime.load_settings('gpg.sublime-settings')
     gpg_command = s.get('gpg_command')
-    opts = [shutil.which(gpg_command),
+    opts = [gpg_command,
             '--armor',
             '--batch',
             '--trust-model', 'always',
