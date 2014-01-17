@@ -26,7 +26,7 @@ set passphrase to text returned of ¬
 PIPE = subprocess.PIPE
 
 
-def gpg(window, data, opts):
+def gpg(window, data, opts_in):
     """gpg calls the gpg binary to process the data and returns the result."""
 
     s = sublime.load_settings('gpg.sublime-settings')
@@ -35,7 +35,11 @@ def gpg(window, data, opts):
             '--armor',
             '--batch',
             '--trust-model', 'always',
-            '--yes'] + opts
+            '--yes']
+    homedir = s.get('homedir')
+    if homedir:
+        opts += ['--homedir', homedir]
+    opts += opts_in
     for _ in range(0, s.get('verbosity')):
         opts.append('--verbose')
     if not opts[0]:

@@ -2,6 +2,10 @@
 	// You may need to specify the full path if gpg is not in $PATH.
 	"gpg_command": "gpg",
 
+	// Sets the GPG home directory to something other than ~/.gnupg. If empty,
+	// uses the default home directory.
+	"homedir": "",
+
 	// Valid values: 0-2.
 	"verbosity": 1,
 }
