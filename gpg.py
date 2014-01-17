@@ -39,12 +39,9 @@ def gpg(window, data, opts_in):
     homedir = s.get('homedir')
     if homedir:
         opts += ['--homedir', homedir]
-    opts += opts_in
     for _ in range(0, s.get('verbosity')):
         opts.append('--verbose')
-    if not opts[0]:
-        panel(window, 'Error: could not locate the gpg binary')
-        return None
+    opts += opts_in
     try:
         gpg_process = subprocess.Popen(opts,
                                        stdin=PIPE, stdout=PIPE, stderr=PIPE)
