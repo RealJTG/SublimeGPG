@@ -26,7 +26,7 @@ Settings
 
     Default: `""`
     
-- `verbosity`: Valid values: 0--2.
+- `verbosity`: Valid values: 0–2.
 
     Default: `1`
 
