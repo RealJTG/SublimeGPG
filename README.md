@@ -22,7 +22,7 @@ Settings
 
 	Default: `"gpg"`
 
-- `homedir`: Sets the GPG home directory to something other than ~/.gnupg. If empty, uses the default home directory.
+- `homedir`: Sets the GPG home directory to something other than `~/.gnupg`. If empty, uses the default home directory.
 
     Default: `""`
     
