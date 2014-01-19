@@ -18,7 +18,7 @@ Menu items added
 Settings
 --------
 
-- `gpg_command`: You may need to specify the full path if gpg is not in `$PATH`.
+- `gpg_command`: You may need to specify the full path if `gpg` is not in `$PATH`.
 
 	Default: `"gpg"`
 
@@ -35,4 +35,4 @@ Flaws and limitations
 
 - On Windows, the passphrase prompt does not hide the text entered: do *not* use this while someone is looking over your shoulder! Linux will also use an insecure passphrase prompt if `zenity` is not installed.
 
-- Signatures can only be created with the default key (the first key in the secret key ring, or else the default specified in gpg.conf).
+- Signatures can only be created with the default key (the first key in the secret key ring, or else the default specified in `gpg.conf`).
