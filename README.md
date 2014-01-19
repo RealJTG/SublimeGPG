@@ -15,6 +15,21 @@ Menu items added
 - Tools → GPG → Sign and encrypt  
 - Tools → GPG → Verify signature
 
+Settings
+--------
+
+- `gpg_command`: You may need to specify the full path if gpg is not in `$PATH`.
+
+	Default: `"gpg"`
+
+- `homedir`: Sets the GPG home directory to something other than ~/.gnupg. If empty, uses the default home directory.
+
+    Default: `""`
+    
+- `verbosity`: Valid values: 0--2.
+
+    Default: `1`
+
 Flaws and limitations
 ---------------------
 
