@@ -34,7 +34,7 @@
 			"caption": "GPG",
 			"command": "open_file",
 			"args": {
-				"file": "${packages}/SublimeGPG/gpg.sublime-settings"
+				"file": "${packages}/User/gpg.sublime-settings"
 			}
 		}]
 	}]
