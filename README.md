@@ -5,6 +5,8 @@ This GPG plugin for Sublime Text 3 adds commands to decrypt, encrypt, sign, and 
 
 On OS X, I recommend installing GPG using the [Homebrew package manager](http://brew.sh/): after installing Homebrew, run `brew install gpg`.
 
+This plugin is now able to decrypt and verify binary encrypted documents if Sublime Text's encoding is set to 'Hexadecimal'. To set it, run the menu command File → Reopen with Encoding → Hexadecimal. Similarly, you can encrypt or sign a binary file so long as it is opened with the Hexadecimal encoding, though the output will still be ASCII armored. Currently, you must manually change the encoding away from Hexadecimal after running a GPG command.
+
 Menu items added
 ----------------
 

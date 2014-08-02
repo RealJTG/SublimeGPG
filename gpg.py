@@ -10,6 +10,7 @@ __author__ = 'crowsonkb@gmail.com (Katherine Crowson)'
 
 import sublime, sublime_plugin
 
+import binascii
 import platform
 import shutil
 import subprocess
@@ -26,9 +27,10 @@ set passphrase to text returned of ¬
 PIPE = subprocess.PIPE
 
 
-def gpg(window, data, opts_in):
+def gpg(view, data, opts_in):
     """gpg calls the gpg binary to process the data and returns the result."""
 
+    window = view.window()
     s = sublime.load_settings('gpg.sublime-settings')
     gpg_command = s.get('gpg_command')
     opts = [gpg_command,
@@ -43,9 +45,14 @@ def gpg(window, data, opts_in):
         opts.append('--verbose')
     opts += opts_in
     try:
-        gpg_process = subprocess.Popen(opts,
+        gpg_process = subprocess.Popen(opts, universal_newlines=False,
                                        stdin=PIPE, stdout=PIPE, stderr=PIPE)
-        result, error = gpg_process.communicate(input=data.encode())
+        if view.encoding() != 'Hexadecimal':
+            result, error = gpg_process.communicate(input=data.encode())
+        else:
+            binary_data = binascii.unhexlify(
+                data.translate(str.maketrans('', '', ' \r\n')).encode())
+            result, error = gpg_process.communicate(input=binary_data)
         if error:
             panel(window, error.decode())
         if gpg_process.returncode:
@@ -55,6 +62,9 @@ def gpg(window, data, opts_in):
         panel(window, 'Error: %s' % e)
         return None
     except OSError as e:
+        panel(window, 'Error: %s' % e)
+        return None
+    except binascii.Error as e:
         panel(window, 'Error: %s' % e)
         return None
 
@@ -102,7 +112,7 @@ class GpgCommand(sublime_plugin.TextCommand):
 
     def run(self, edit, opts):
         doc = sublime.Region(0, self.view.size())
-        data = gpg(self.view.window(), self.view.substr(doc), opts)
+        data = gpg(self.view, self.view.substr(doc), opts)
         if data:
             self.view.replace(edit, doc, data)
 
